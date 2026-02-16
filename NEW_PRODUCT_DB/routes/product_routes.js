@@ -1,15 +1,22 @@
-const products{
-    getSingleProducts,
+const route = require('express').Router();
+
+const {
+    getSingleProduct,
     getAllProducts,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
 } = require('../controllers/product_controllers.js');
-app.get('/' , getAllProducts);
-app.get('/:id' , getSingleProducts);
 
-app.post('/' , createProduct);
 
-app.put('/:id' ,updateProduct);
+route.get('/' , getAllProducts);
+route.get('/:id' , getSingleProduct);
 
-app.delete('/:id' , deleteProduct);
+route.post('/' , createProduct);
+
+route.put('/:id' ,updateProduct);
+
+route.delete('/:id' , deleteProduct);
+
+
+module.exports = route ;

@@ -1,35 +1,50 @@
+const product = require('../models/product.js');
 
-
-app.get('/' , async (req , res) => {
+const getAllProducts =  async (req , res) => {
     const allproduct = await product.find();
     res.send(allproduct);
-});
-app.get('/api/product/:id' , async (req , res) => {
+};
+const getSingleProduct =  async (req , res) => {
     const id = req.params.id;
-    const user = await product.findById(id);
-    if(!user){
+    const productid = await product.findById(id);
+    if(!productid){
         return res.status(404).json({message:"User name with this user_id not found"});
     }
-    res.send(user);
-});
+    res.send(productid);
+};
 
-app.post('/api/product' , async(req , res) => {
-    const {Name , Mob , Email , Course , Age} = req.body;
-    const newUser = new product({
-        Name , Mob , Email , Course , Age
+const createProduct = async(req , res) => {
+    const {title , description , price , category} = req.body;
+    const newProduct = new product({
+        title , description , price , category , timestamps
     });
-    await newUser.save();
-    res.send({message : `User Created Successfully ${Name}`});
-});
+    await newProduct.save();
+    res.send({message : `Product Created Successfully :${title}`});
+};
 
-app.put('/api/product/:id' ,async (req, res) => {
+const updateProduct = async (req, res) => {
     const id = req.params.id ;
-    const user =await product.findByIdAndUpdate(id , req.body , {new : true});
-    if(!user){
-        res.status(404).json({message : `User with id : ${id} is not found`});
+    const productid =await product.findByIdAndUpdate(id , req.body , {new : true});
+    if(!productid){
+        res.status(404).json({message : `Product with id : ${id} is not found`});
     }
-    res.status(200).json({message : "User updated successfully" , user});
-});
+    res.status(200).json({message : "Product updated successfully" , product : id});
+};
 
-app.delete('/api/product/:id' , async (req , res) => {
-});
+const deleteProduct =  async (req , res) => {
+    const id = req.params.id;
+    const productid = await product.findByIdAndDelete(id);
+    if(!productid){
+        res.status(404).json({message : `Product with ${id} is not found`});
+    }
+    res.send({message : "Product deleted Successfully"});
+};
+
+
+module.exports = {
+    getAllProducts ,
+    getSingleProduct, 
+    createProduct ,
+    updateProduct ,
+    deleteProduct
+}
