@@ -1,9 +1,11 @@
 const route = require('express').Router();
-const { createTask }= require('../controllers/taskController');
+const { createTask , getUserTask , getAllTask}= require('../controllers/taskController');
 const authMiddleware = require("../middleware/auth");
 
 
-route.post('/create' ,authMiddleware, createTask);
+route.post('/create' , authMiddleware, createTask);
+route.get('/:id' , getUserTask);
+route.get('/' , getAllTask);
 
 
-module.exports = route ;
+module.exports = route;
