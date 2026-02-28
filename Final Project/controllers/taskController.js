@@ -47,12 +47,19 @@ const getUserTask = async (req , res) => {
 
 const getAllTask = async (req , res) => {
     try{
-        const tasks = await Task.find();
-        res.status(200).send({
-            success : true ,
-            No_of_task : tasks.length,
-            tasks
-        })
+        const task = await Task.findByIdAndDelete(req.params.id);
+
+        if (!task) {
+            return res.status(404).json({
+                success: false,
+                message: "Task not found"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Task deleted successfully"
+        });
     } catch(error){
         console.log("Get Task Error" , error);
     }
@@ -72,5 +79,6 @@ const deleteTask = async (req, res) => {
 module.exports = {
     createTask,
     getUserTask,
-    getAllTask
+    getAllTask,
+    deleteTask
 }
